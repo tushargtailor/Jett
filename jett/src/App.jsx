@@ -1,5 +1,21 @@
+/**
+ * @copyright 2024 codewithsadee
+ * @license Apache-2.0
+ */
+
+/**
+ * Components
+ */
+import PageTitle from "./components/PageTitle";
+
 const App = () => {
-  return <div>App</div>;
+  return (
+    <>
+      {/** Meta title */}
+      <PageTitle title='Jett - chat to supercharge your ideas' />
+
+    </>
+  );
   
 };
 
