@@ -39,7 +39,8 @@ Button.propTypes = {
  */
 const IconBtn = ({ classes = '', icon, size = '', children, ...rest }) => {
     return (
-        <button className={`icon-btn ${size} ${classes}`} { ...rest } >
+        <button 
+            className={`icon-btn ${size} ${classes}`} { ...rest } >
             {children}
 
             {!children && ( 
