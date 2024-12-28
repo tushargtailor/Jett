@@ -6,8 +6,19 @@
 /**
  * Node modules
  */
-import { Link, useNavigation } from 'react-router-dom';
+import { useNavigation, useNavigate, useLoaderData } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
+
+/**
+ * Custom modules
+ */
+import logout from '../utils/logout';
+
+/**
+ * Custom hooks
+ */
+import { useToggle } from '../hooks/useToggle';
 
 /**
  * Components
@@ -17,15 +28,19 @@ import Avatar from './Avatar';
 import Menu from './Menu';
 import MenuItem from './MenuItem';
 import { LinearProgress } from './Progress';
+import Logo from './Logo';
 
-/**
- * Assets
- */
-import { logoLight, logoDark } from '../assets/assets';
 
-const TopAppBar = () => {
+const TopAppBar = ({ toggleSidebar }) => {
 
   const navigation = useNavigation();
+
+  const navigate = useNavigate();
+
+  const { user } = useLoaderData();
+  
+
+  const [showMenu, setShowMenu] = useToggle();
 
   const isNormalLoad = navigation.state === 'loading' && !navigation.formData;
 
@@ -35,33 +50,22 @@ const TopAppBar = () => {
         <IconBtn
           icon='menu'
           title='Menu'
+          classes='lg:hidden'
+          onClick={toggleSidebar}
         />
-        <Link
-          to='/'
-          className=''
-        >
-          <img
-            src={logoLight}
-            width={133}
-            height={24}
-            alt='jett logo'
-            className='dark:hidden'
-          />
-          <img
-            src={logoDark}
-            width={133}
-            height={24}
-            alt='jett logo'
-            className='hidden dark:block'
-          />
-        </Link>
+
+        <Logo classes='lg:hidden'/>
+
       </div>
       <div className='menu-wrapper'>
-        <IconBtn>
-          <Avatar name='Tushar' />
+        <IconBtn onClick={setShowMenu} >
+          <Avatar name={user.name} />
         </IconBtn>
-        <Menu>
-          <MenuItem  labelText='Log out' />
+        <Menu classes={showMenu ? 'active' : ''}>
+          <MenuItem  
+          labelText='Log out' 
+          onClick={() => logout(navigate)} 
+          />
         </Menu>
       </div>
       <AnimatePresence>
@@ -69,6 +73,10 @@ const TopAppBar = () => {
       </AnimatePresence>
     </header> 
   );
+};
+
+TopAppBar.propTypes = {
+  toggleSidebar: PropTypes.func,
 };
 
 export default TopAppBar;
