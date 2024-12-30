@@ -20,4 +20,17 @@ const getConversationTitle = async (userPrompt) => {
     }
 };
 
-export { getConversationTitle };
+const getAiResponse = async (userPrompt, chats = []) => {
+    try {
+        model.generationConfig = { temperature: 1.5 };
+        const chat = model.startChat({ history: chats });
+        const result = await chat.sendMessage(userPrompt);
+
+        return result.response.text();
+    } catch (error) {
+        console.log(`Error generating AI response: ${error.message}`);
+        
+    }
+};
+
+export { getConversationTitle, getAiResponse };

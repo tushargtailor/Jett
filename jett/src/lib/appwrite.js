@@ -6,7 +6,7 @@
 /**
  * Node modules
  */
-import { Client, Account, Avatars } from 'appwrite';
+import { Client, Account, Avatars, Databases } from 'appwrite';
 
 /**
  * Initial appwrite client
@@ -26,5 +26,9 @@ const account = new Account(client);
  * Initial appwrite avatars
  */
 const avatars = new Avatars(client);
+/**
+ * Initial appwrite databases
+ */
+const databases = new Databases(client);
 
-export { account, avatars };
+export { account, avatars, databases };

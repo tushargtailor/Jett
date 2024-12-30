@@ -623,6 +623,22 @@
     after:pointer-events-none;
   }
 
+  /**
+  *Markdown Content
+  */
+  .markdown-content {
+    @apply text-light-onSurface
+    dark:text-dark-onSurface
+    leading-7
+    pt-1;
+  }
+
+  .markdown-content > :first-child {
+    @apply !mt-0;
+  }
+
+  .markdown-content 
+
 }
 
 /**

@@ -4,40 +4,38 @@
  */
 
 /**
- * Node Modules
+ * Node modules
  */
 import { redirect } from 'react-router-dom';
-import { Query } from 'appwrite';
 
 /**
  * Custom modules
  */
 import { account, databases } from '../../lib/appwrite';
 
-const appLoader = async () => {
+const conversationLoader = async ({ params }) => {
+  const { conversationId } = params;
   const data = {};
 
   try {
     data.user = await account.get();
   } catch (error) {
-    console.log(`Error getting user session: ${error.message}`);
+    console.log(`Error getting user account: ${error.message}`);
+
     return redirect('/login');
   }
 
   try {
-    data.conversation = await databases.listDocuments(
+    data.conversation = await databases.getDocument(
       import.meta.env.VITE_APPWRITE_DATABASE_ID,
       'conversations',
-      [
-        Query.select(['$id', 'title']),
-        Query.orderDesc('$createdAt'),
-        Query.equal('user_id', data.user.$id),
-      ],
+      conversationId,
     );
   } catch (error) {
-    console.log(`Error getting conversations: ${error.message}`);
+    console.log(`Error getting conversation: ${error.message}`);
+    throw error;
   }
   return data;
 };
 
-export default appLoader;
+export default conversationLoader;

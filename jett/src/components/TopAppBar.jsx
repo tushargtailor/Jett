@@ -30,15 +30,12 @@ import MenuItem from './MenuItem';
 import { LinearProgress } from './Progress';
 import Logo from './Logo';
 
-
 const TopAppBar = ({ toggleSidebar }) => {
-
   const navigation = useNavigation();
 
   const navigate = useNavigate();
 
   const { user } = useLoaderData();
-  
 
   const [showMenu, setShowMenu] = useToggle();
 
@@ -54,24 +51,25 @@ const TopAppBar = ({ toggleSidebar }) => {
           onClick={toggleSidebar}
         />
 
-        <Logo classes='lg:hidden'/>
-
+        <Logo classes='lg:hidden' />
       </div>
       <div className='menu-wrapper'>
-        <IconBtn onClick={setShowMenu} >
+        <IconBtn onClick={setShowMenu}>
           <Avatar name={user.name} />
         </IconBtn>
         <Menu classes={showMenu ? 'active' : ''}>
-          <MenuItem  
-          labelText='Log out' 
-          onClick={() => logout(navigate)} 
+          <MenuItem
+            labelText='Log out'
+            onClick={() => logout(navigate)}
           />
         </Menu>
       </div>
       <AnimatePresence>
-      {isNormalLoad && <LinearProgress />}
+        {isNormalLoad && (
+          <LinearProgress classes='absolute top-full left-0 right-0 z-10' />
+        )}
       </AnimatePresence>
-    </header> 
+    </header>
   );
 };
 
