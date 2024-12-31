@@ -15,6 +15,7 @@ import { useLoaderData } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import UserPrompt from '../components/UserPrompt';
 import AiResponse from '../components/AiResponse';
+import PromptPreloader from '../components/PromptPreloader';
 
 const Conversation = () => {
   const {
@@ -26,17 +27,24 @@ const Conversation = () => {
       {/* Meta title */}
       <PageTitle title={`${title} | Jett`} />
 
-      <motion.div className=''>
+      <motion.div
+        className='max-w-[700px] mx-auto !will-change-auto'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2, delay: 0.05, ease: 'easeOut' }}
+      >
         {chats.map((chat) => (
           <div key={chat.$id}>
             {/* UserPrompt */}
-            <UserPrompt text={chat.user_prompt}/>
+            <UserPrompt text={chat.user_prompt} />
 
             {/* AiResponse */}
-            <AiResponse aiResponse={chat.ai_response}/>
+            <AiResponse aiResponse={chat.ai_response} />
           </div>
         ))}
       </motion.div>
+
+      <PromptPreloader promptValue='Hi' />
     </>
   );
 };

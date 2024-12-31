@@ -7,7 +7,7 @@
  * Node modules
  */
 import { motion } from 'framer-motion';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, useNavigation } from 'react-router-dom';
 
 /**
  * Custom hooks
@@ -24,10 +24,13 @@ import Greetings from './pages/Greetings';
 import PromptField from './components/PromptField';
 
 const App = () => {
-
   const params = useParams();
 
+  const navigation = useNavigation();
+
   const [isSidebarOpen, toggleSidebar] = useToggle();
+
+  const isNormalLoad = navigation.state === 'loading' && !navigation.formData;
 
   return (
     <>
@@ -48,10 +51,11 @@ const App = () => {
           {/** Main content */}
           <div className='px-5 pb-5 flex flex-col overflow-y-auto'>
             <div className='max-w-[840px] w-full mx-auto grow'>
-              {params.conversationId ? (
+              {isNormalLoad ? null : params.conversationId ? (
                 <Outlet />
-              ) : ( <Greetings /> )}
-              
+              ) : (
+                <Greetings />
+              )}
             </div>
           </div>
 
