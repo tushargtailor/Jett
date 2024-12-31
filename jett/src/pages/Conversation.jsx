@@ -7,7 +7,12 @@
  * Node modules
  */
 import { motion } from 'framer-motion';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useLocation } from 'react-router-dom';
+
+/**
+ * Custom hooks
+ */
+import { usePromptPreloader } from '../hooks/userPromptPreloader';
 
 /**
  * Components
@@ -22,6 +27,10 @@ const Conversation = () => {
     conversation: { title, chats },
   } = useLoaderData() || {};
 
+  const { promptPreloaderValue } = usePromptPreloader();
+
+  const location = useLocation();
+
   return (
     <>
       {/* Meta title */}
@@ -29,7 +38,7 @@ const Conversation = () => {
 
       <motion.div
         className='max-w-[700px] mx-auto !will-change-auto'
-        initial={{ opacity: 0 }}
+        initial={!location.state?._isRedirect && { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2, delay: 0.05, ease: 'easeOut' }}
       >
@@ -44,7 +53,9 @@ const Conversation = () => {
         ))}
       </motion.div>
 
-      <PromptPreloader promptValue='Hi' />
+      {promptPreloaderValue && (
+        <PromptPreloader promptValue={promptPreloaderValue} />
+      )}
     </>
   );
 };

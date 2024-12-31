@@ -6,7 +6,13 @@
 /**
  * Node modules
  */
-import { useNavigation, useNavigate, useLoaderData } from 'react-router-dom';
+import {
+  useNavigation,
+  useNavigate,
+  useLoaderData,
+  useParams,
+  useSubmit,
+} from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import PropTypes from 'prop-types';
 
@@ -14,6 +20,7 @@ import PropTypes from 'prop-types';
  * Custom modules
  */
 import logout from '../utils/logout';
+import deleteConversation from '../utils/deleteConversation';
 
 /**
  * Custom hooks
@@ -35,7 +42,11 @@ const TopAppBar = ({ toggleSidebar }) => {
 
   const navigate = useNavigate();
 
-  const { user } = useLoaderData();
+  const { conversations, user } = useLoaderData();
+
+  const params = useParams();
+
+  const submit = useSubmit();
 
   const [showMenu, setShowMenu] = useToggle();
 
@@ -53,6 +64,25 @@ const TopAppBar = ({ toggleSidebar }) => {
 
         <Logo classes='lg:hidden' />
       </div>
+
+      {params.conversationId && (
+        <IconBtn
+          icon='delete'
+          classes='ms-auto me-1 lg:hidden'
+          onClick={() => {
+            const { title } = conversations.documents.find(
+              ({ $id }) => params.conversationId === $id,
+            );
+
+            deleteConversation({
+              id: params.conversationId,
+              title,
+              submit,
+            });
+          }}
+        />
+      )}
+
       <div className='menu-wrapper'>
         <IconBtn onClick={setShowMenu}>
           <Avatar name={user.name} />
